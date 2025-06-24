@@ -116,17 +116,13 @@ if __name__ == '__main__':
     print(f"Loading model from: {args.model_path}")
 
     model = tf.keras.models.load_model("./model.keras")
-    # model.export("./model")
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
 
-    # Optional: enable optimizations
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
 
-    # Convert the model
     tflite_model = converter.convert()
     with open('model2.tflite', 'wb') as f:
         f.write(tflite_model)
-    # model.save("./model.h5")
 
     classifier = SkinCancerClassifier(model=model, csv_path=args.csv_path)
     visualizer = SkinCancerVisualizer(classifier=classifier, save_path=args.save_dir)
